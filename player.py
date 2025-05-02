@@ -1,6 +1,7 @@
 import pygame
 from constants import *
 from circleshape import CircleShape
+from shot import Shot
 
 
 class Player(CircleShape):
@@ -33,6 +34,12 @@ class Player(CircleShape):
             self.move(dt)
         if keys[pygame.K_s]:
             self.move(-dt)
+    #Player shoots
+        if keys[pygame.K_SPACE]:
+            self.shoot()
+
+        # Update the position based on velocity
+        self.position += self.velocity * dt
 
     # Clamp the player position to the screen boundaries
         self.position.x = max(0, min(self.position.x, SCREEN_WIDTH))
@@ -45,3 +52,10 @@ class Player(CircleShape):
     def move(self, dt):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
         self.position += forward * PLAYER_SPEED * dt
+    
+    def shoot(self):
+        shot = Shot(self.position.x,self.position.y)
+        shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation)*PLAYER_SHOOT_SPEED
+
+
+
